@@ -7,6 +7,7 @@ use URI::Encode qw( uri_encode );
 use Data::Dumper;
 use MIME::Base64 qw( encode_base64 );
 use Digest::SHA qw( hmac_sha1 );
+use Devel::Dwarn;
 
 our $VERSION = '0.000100'; # 0.1.0
 $VERSION = eval $VERSION;
@@ -115,6 +116,9 @@ sub sign_request {
     my $sign = encode_base64( 
         hmac_sha1( $self->get_signature_base( $request ), $self->get_signing_key ) 
     );
+    $sign =~ s/\s*$//;
+    $sign = $self->oauth_encode($sign);
+
     $request->header( "Authorization" => $self->get_authorization_header( $request, $sign)  );
 }
 
@@ -129,7 +133,7 @@ sub get_authorization_header {
 
 sub get_signing_key {
     my ( $self ) = @_;
-
+    
     return sprintf( 
         "%s&%s", 
         $self->oauth_consumer_secret,  
@@ -140,7 +144,7 @@ sub get_signing_key {
 sub get_signature_base {
     my ( $self, $request ) = @_;
 
-    join( "&", 
+    return join( "&", 
         $self->oauth_encode($request->method), 
         $self->oauth_encode($request->uri), 
         $self->oauth_encode($self->normalize_request_params( $request )) 
