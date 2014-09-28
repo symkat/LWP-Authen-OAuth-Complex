@@ -91,7 +91,7 @@ sub oauth_fields {
         [ oauth_nonce             => $self->oauth_nonce ],
         [ oauth_timestamp         => time ],
         [ oauth_version           => "1.0" ], # If not a string, this becomes 1
-        ( $self->oauth_consumer_key ? [ oauth_consumer_key      => $self->oauth_consumer_key ] : () ),
+        ( $self->oauth_consumer_key ? ( [ oauth_consumer_key      => $self->oauth_consumer_key ] ) : () ),
         ( $self->oauth_token ? [ oauth_token             => $self->oauth_token ] : (  ) ),
         [ oauth_signature_method  => $self->oauth_signature_method ],
         ( $self->oauth_verifier ? [ oauth_verifier  => $self->oauth_verifier ] : (  ) ),
