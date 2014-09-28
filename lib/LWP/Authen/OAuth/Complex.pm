@@ -4,10 +4,8 @@ use strict;
 use parent 'LWP::UserAgent';
 use Carp qw( croak );
 use URI::Encode qw( uri_encode );
-use Data::Dumper;
 use MIME::Base64 qw( encode_base64 );
 use Digest::SHA qw( hmac_sha1 );
-use Devel::Dwarn;
 
 our $VERSION = '0.000100'; # 0.1.0
 $VERSION = eval $VERSION;
